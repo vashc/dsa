@@ -3,7 +3,7 @@
 #include "string.h"
 #include "stdio.h"
 
-void *_da_malloc(DSize size) {
+void *_da_malloc(Size size) {
     void *mem = malloc(size);
 
     if (NULL == mem && size > 0)
@@ -17,7 +17,7 @@ void _da_free(void *mem) {
         free(mem);
 }
 
-DSize _da_new_capacity(DSize cap, DMethod method) {
+Size _da_new_capacity(Size cap, Method method) {
     switch (method) {
         case METHOD_SINGLE:
             cap += 1;
@@ -30,12 +30,12 @@ DSize _da_new_capacity(DSize cap, DMethod method) {
     return cap;
 }
 
-DArray *da_new(DSize cap) {
+DArray *da_new(Size cap) {
     if (cap == 0)
         cap = INITIAL_CAP;
 
     DArray *array = _da_malloc(sizeof(DArray));
-    array->array = malloc(sizeof(DItem) * cap);
+    array->array = malloc(sizeof(Item) * cap);
     array->size = 0;
     array->cap = cap;
 
@@ -47,10 +47,10 @@ void da_free(DArray *array) {
     _da_free(array);
 }
 
-void da_add(DArray *array, DItem item) {
+void da_add(DArray *array, Item item) {
     if (array->size >= array->cap) {
-        DSize cap = _da_new_capacity(array->cap, METHOD_FACTOR);
-        DItem *new_array = realloc(array->array, cap * sizeof(DItem));
+        Size cap = _da_new_capacity(array->cap, METHOD_FACTOR);
+        Item *new_array = realloc(array->array, cap * sizeof(Item));
         array->array = new_array;
         array->cap = cap;
     }
@@ -58,29 +58,29 @@ void da_add(DArray *array, DItem item) {
     array->array[array->size++] = item;
 }
 
-void da_insert(DArray *array, DItem item, DSize index) {
+void da_insert(DArray *array, Item item, Size index) {
     if (array->size >= array->cap) {
-        DSize cap = _da_new_capacity(array->cap, METHOD_FACTOR);
-        DItem *new_array = realloc(array->array, cap * sizeof(DItem));
+        Size cap = _da_new_capacity(array->cap, METHOD_FACTOR);
+        Item *new_array = realloc(array->array, cap * sizeof(Item));
         array->array = new_array;
         array->cap = cap;
     }
 
-    memmove(array->array + index + 1, array->array + index, (array->size++ - index) * sizeof(DItem));
+    memmove(array->array + index + 1, array->array + index, (array->size++ - index) * sizeof(Item));
     array->array[index] = item;
 }
 
-DItem da_remove(DArray *array, DSize index) {
+Item da_remove(DArray *array, Size index) {
     if (index >= array->size)
         return 0;
 
-    DItem item = array->array[index];
-    memmove(array->array + index, array->array + index + 1, (--array->size - index) * sizeof(DItem));
+    Item item = array->array[index];
+    memmove(array->array + index, array->array + index + 1, (--array->size - index) * sizeof(Item));
 
     return item;
 }
 
-DItem da_get(DArray *array, DSize index) {
+Item da_get(DArray *array, Size index) {
     if (index >= array->size)
         return 0;
 

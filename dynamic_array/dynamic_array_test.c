@@ -24,7 +24,7 @@ int main() {
         printf("[%d]: %d; ", i, array->array[i]);
     printf("\n");
 
-    DItem item = da_remove(array, 5);
+    Item item = da_remove(array, 5);
 
     assert(item == 6);
     assert(array->cap == 13);

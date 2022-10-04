@@ -8,38 +8,34 @@
 
 #define INITIAL_CAP 4
 
-#define MAX(x, y) ((x) >= (y) ? (x) : (y))
-
-typedef int DItem;
-typedef unsigned int DSize;
-typedef unsigned int DMethod;
+typedef int Item;
+typedef unsigned int Size;
+typedef unsigned int Method;
 
 typedef struct DArray {
-    DItem *array;
-    DSize size;
-    DSize cap;
+    Item *array;
+    Size size;
+    Size cap;
 } DArray;
 
 // Public methods
-DArray *da_new(DSize cap);
+DArray *da_new(Size cap);
 
 void da_free(DArray *array);
 
-void da_add(DArray *array, DItem item);
+void da_add(DArray *array, Item item);
 
-void da_insert(DArray *array, DItem item, DSize index);
+void da_insert(DArray *array, Item item, Size index);
 
-DItem da_remove(DArray *array, DSize index);
+Item da_remove(DArray *array, Size index);
 
-DItem da_get(DArray *array, DSize index);
+Item da_get(DArray *array, Size index);
 
 // Private methods
-void *_da_malloc(DSize size);
-
-void *_da_realloc(DItem *array, DMethod method);
+void *_da_malloc(Size size);
 
 void _da_free(void *mem);
 
-DSize _da_new_capacity(DSize cap, DMethod method);
+Size _da_new_capacity(Size cap, Method method);
 
 #endif /* DYNAMIC_ARRAY_H_ */
