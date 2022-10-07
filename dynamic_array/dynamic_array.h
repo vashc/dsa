@@ -1,6 +1,6 @@
 #pragma once
-#ifndef DYNAMIC_ARRAY_H_
-#define DYNAMIC_ARRAY_H_
+#ifndef DSA_DYNAMIC_ARRAY_H
+#define DSA_DYNAMIC_ARRAY_H
 
 // Possible reallocation methods
 #define METHOD_SINGLE 0
@@ -38,4 +38,4 @@ void _da_free(void *mem);
 
 Size _da_new_capacity(Size cap, Method method);
 
-#endif /* DYNAMIC_ARRAY_H_ */
+#endif /* DSA_DYNAMIC_ARRAY_H */
