@@ -19,6 +19,9 @@ void oht_free(OAHashTable *hash_table) {
     if (NULL == hash_table)
         return;
 
+    for (int i = 0; i < hash_table->capacity; i++)
+        free(hash_table->table[i]);
+
     free(hash_table->table);
     free(hash_table);
 }
@@ -30,7 +33,6 @@ int oht_insert(OAHashTable *hash_table, Value value) {
 
     for (int i = 0; i < hash_table->capacity; i++) {
         unsigned int table_idx = hash_table->probing_func(hash_table->hash_func, value, i) % hash_table->capacity;
-        printf("i: %d, table_idx: %d\n", i, table_idx);
 
         if (NULL == hash_table->table[table_idx])
             hash_table->table[table_idx] = _oht_new_node(value, false);
@@ -53,7 +55,7 @@ int oht_search(struct OAHashTable *hash_table, Value value) {
         if (NULL == hash_table->table[table_idx])
             return -1;
 
-        if (value == hash_table->table[table_idx]->value)
+        if (value == hash_table->table[table_idx]->value && !(hash_table->table[table_idx]->is_deleted))
             return 0;
     }
 
@@ -67,9 +69,9 @@ int oht_remove(OAHashTable *hash_table, Value value) {
         if (NULL == hash_table->table[table_idx])
             // The value has not been found
             return -1;
-        else if (!hash_table->table[table_idx]->is_deleted)
+        else if (hash_table->table[table_idx]->is_deleted) {
             continue;
-        else if (value == hash_table->table[table_idx]->value) {
+        } else if (value == hash_table->table[table_idx]->value) {
             hash_table->table[table_idx]->is_deleted = true;
             hash_table->size--;
             return 0;

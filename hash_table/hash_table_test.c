@@ -43,8 +43,9 @@ int main() {
 
     oht_remove(ohash_table, "lol");
     assert(oht_search(ohash_table, "lol") == -1);
+
     // Assure that the element was deleted lazily
-    assert(ohash_table->table[hash_pjw32("string")]->is_deleted);
+    assert(ohash_table->table[hash_pjw32("lol") % ohash_table->capacity]->is_deleted);
 
     oht_free(ohash_table);
 }
